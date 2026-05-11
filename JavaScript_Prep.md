@@ -393,3 +393,217 @@ console.log(user1.name); // Paul
 ```
 
 Because both variables point to the same object in memory.
+
+# Scope & Closures
+
+## 9. What is scope?
+
+Scope in JavaScript defines where variables can be accessed in the program. JavaScript mainly has global scope, function scope, and block scope. Variables declared with var are function scoped, while let and const are block scoped. JavaScript also supports lexical scoping, where inner functions can access variables from their parent scope through the scope chain.
+
+##### Function Scope Example:
+
+```js
+function test() {
+  var age = 22;
+
+  console.log(age);
+}
+
+test(); // 22
+
+console.log(age); // ReferenceError
+```
+
+Because age exists only inside the function.
+
+##### Block Scope Example :
+
+```js
+if (true) {
+  let city = "Kolkata";
+}
+
+console.log(city); // ReferenceError
+```
+
+Because city exists only inside the block.
+
+##### Lexical Scope Example :
+
+```js
+function outer() {
+  let name = "Jeet";
+
+  function inner() {
+    console.log(name);
+  }
+
+  inner();
+}
+
+outer(); // Jeet
+```
+
+## Difference between: global scope, function scope, block scope
+
+#### Global Scope
+
+A variable declared outside all functions and blocks belongs to the global scope.
+
+It can be accessed from anywhere in the program.
+
+##### Example:
+
+```js
+let name = "Jeet";
+
+function show() {
+  console.log(name);
+}
+
+show(); // Jeet
+
+console.log(name); // Jeet
+```
+
+Because name is globally available.
+
+#### Function Scope
+
+Variables declared with var inside a function are accessible only within that function.
+
+##### Example :
+
+```js
+function test() {
+  var age = 22;
+
+  console.log(age);
+}
+
+test(); // 22
+
+console.log(age); // ReferenceError
+```
+
+Because age exists only inside test().
+
+#### Block Scope
+
+Variables declared using:
+
+- let
+- const
+  inside {} are block scoped.
+
+A block can be:
+
+- if
+- for
+- while
+- {}
+
+##### Example:
+
+```js
+if (true) {
+  let city = "Kolkata";
+}
+
+console.log(city); // ReferenceError
+```
+
+Because city exists only inside the block.
+
+#### Why Scope Is Important
+
+Scope helps:
+
+- avoid variable conflicts
+- improve memory management
+- make code secure and maintainable
+- support closures and encapsulation
+
+## 11. What is lexical scope?
+
+Lexical scope means a function can access variables from its parent scope because scope in JavaScript is determined by where functions are written in the code. Inner functions can access variables from outer functions through the scope chain. JavaScript uses lexical scoping, which is also the foundation of closures.
+
+##### Example :
+
+```js
+function outer() {
+  let name = "Jeet";
+
+  function inner() {
+    console.log(name);
+  }
+
+  inner();
+}
+
+outer(); // Jeet
+```
+
+Because inner() is lexically inside outer(),
+so it can access variables from outer().
+
+#### Scope Chain in Lexical Scope
+
+JavaScript searches variables in this order:
+
+1. Current scope
+2. Parent scope
+3. Global scope
+
+This process is called:`Scope Chain`
+
+## 12. What is closure?
+
+A function that remembers and can access variables from its outer scope even after the outer function has finished execution.
+
+##### Example :
+
+```js
+function outer() {
+  let count = 0;
+
+  function inner() {
+    count++;
+    console.log(count);
+  }
+
+  return inner;
+}
+
+const counter = outer();
+
+counter(); // 1
+counter(); // 2
+counter(); // 3
+```
+
+## 13. Why are closures useful?
+
+Closures are useful because they allow functions to:
+remember and access variables from their outer scope even after the outer function has finished execution.
+
+They are one of the most powerful features of JavaScript and are widely used in real-world applications.
+
+#### Main Uses of Closures
+
+Closures are mainly useful for:
+
+- Data Privacy / Encapsulation
+- Maintaining State
+- Function Factories
+- Callbacks & Event Handlers
+- Memoization
+- Module Pattern
+- React Hooks and Async Operations
+
+## 14. How can closures cause memory leaks?
+
+Closures can cause memory leaks when: a function unnecessarily keeps references to variables or large objects that are no longer needed.
+
+Because closures preserve outer variables in memory,
+JavaScript’s garbage collector cannot remove them until all references are gone.
