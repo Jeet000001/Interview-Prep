@@ -349,13 +349,16 @@ console.log(user1.name); // Paul
 
 Because both variables point to the same object in memory.
 
-## 8. Difference between pass by value and pass by reference 
-#### Pass by Value: 
+## 8. Difference between pass by value and pass by reference
+
+#### Pass by Value:
+
 In pass by value:
 A copy of the actual value is passed.
 So changing the copied value does NOT affect the original value.
 
 Primitive data types work this way.
+
 ```js
 let a = 10;
 let b = a;
@@ -365,14 +368,18 @@ b = 20;
 console.log(a); // 10
 console.log(b); // 20
 ```
+
 Because b gets a separate copy of a.
 
 #### Pass by Reference :
+
 In pass by reference:
 The memory reference (address) is copied instead of the actual value.
 
 Non-primitive data types work this way.
+
 ##### Example :
+
 ```js
 let user1 = {
   name: "Jeet",
@@ -384,4 +391,5 @@ user2.name = "Paul";
 
 console.log(user1.name); // Paul
 ```
+
 Because both variables point to the same object in memory.
