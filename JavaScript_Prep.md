@@ -607,3 +607,207 @@ Closures can cause memory leaks when: a function unnecessarily keeps references 
 
 Because closures preserve outer variables in memory,
 JavaScript’s garbage collector cannot remove them until all references are gone.
+
+# 3. Functions
+
+## 16. Difference between function declaration and function expression
+
+#### Function declaration:
+
+A function declaration defines a named function directly and is fully hoisted, so it can be called before its definition. Function declarations are generally used for reusable utility functions.
+
+##### Example :
+
+```js
+sayHello(); // Hello
+
+function sayHello() {
+  console.log("Hello");
+}
+```
+
+#### Function expression:
+
+A function expression stores a function inside a variable, and only the variable declaration is hoisted, not the function assignment. Function expressions are commonly used for callbacks, closures, and dynamic behavior.
+
+##### Example:
+
+```js
+sayHi(); // ReferenceError
+
+const sayHi = function () {
+  console.log("Hi");
+};
+```
+
+Because:
+
+- sayHi exists in TDZ (const)
+- function is not initialized yet
+
+## 16. Difference between normal function and arrow function
+
+#### Normal function:
+
+Normal functions have their own this, support the arguments object, can be used as constructors, and have a prototype property.
+
+#### arrow function:
+
+Arrow functions are a shorter way to write functions introduced in ES6, but the main difference is that they do not have their own this. Instead, they inherit this from the surrounding lexical scope.
+
+## 17. What is callback function?
+
+A callback function is a function passed as an argument to another function and executed later after a task is completed. Callbacks are commonly used in asynchronous JavaScript, event handling, timers, and array methods.
+
+##### Example :
+
+```js
+function greet(name, callback) {
+  console.log(`Hello ${name}`);
+
+  callback();
+}
+
+function sayBye() {
+  console.log("Goodbye");
+}
+
+greet("Jeet", sayBye);
+// Hello Jeet
+// Goodbye
+```
+
+## 18. What are higher-order functions?
+
+A higher-order function is a function that either accepts another function as an argument or returns a function. JavaScript supports higher-order functions because functions are first-class citizens. Common examples include map, filter, reduce, and setTimeout. Higher-order functions help create reusable, flexible, and cleaner code, and they are a core concept in functional programming.
+
+##### Example :
+
+###### Function Taking Another Function
+
+```js
+function greet(name) {
+  return `Hello ${name}`;
+}
+
+function processUser(callback) {
+  console.log(callback("Jeet"));
+}
+
+processUser(greet); // Hello Jeet
+```
+
+###### Function Returning Another Function
+
+```js
+function multiply(x) {
+  return function (y) {
+    return x * y;
+  };
+}
+
+const double = multiply(2);
+
+console.log(double(5)); // 10
+```
+
+## 19. What is a pure function?
+
+A pure function is a function that always returns the same output for the same input and does not modify external state.
+
+##### Example :
+
+```js
+function add(a, b) {
+  return a + b;
+}
+
+console.log(add(2, 3)); // 5
+console.log(add(2, 3)); // 5
+```
+
+Same input always gives same output.
+
+##### Example of Impure Function
+
+```js
+let count = 0;
+
+function increment() {
+  count++;
+}
+```
+
+## 20. What is recursion?
+
+Recursion is a programming technique where a function calls itself repeatedly until a base condition is met. A recursive function typically contains a base case to stop execution and a recursive call to continue the process. Recursion is commonly used for problems like factorials, tree traversal, nested data structures, and divide-and-conquer algorithms.
+
+##### Example:
+
+```js
+function countdown(n) {
+  if (n === 0) {
+    console.log("Done");
+    return;
+  }
+
+  console.log(n);
+
+  countdown(n - 1);
+}
+
+countdown(5);
+// 5
+// 4
+// 3
+// 2
+// 1
+// Done
+```
+
+## 21. What is currying?
+
+A technique where a function with multiple arguments is transformed into a sequence of functions, each taking one argument at a time.
+
+##### Example:
+
+```js
+function add(a, b, c) {
+  return a + b + c;
+}
+
+console.log(add(1, 2, 3)); // 6
+```
+
+## 22. What is memoization?
+
+An optimization technique where the result of an expensive function call is cached so that future calls with the same input can return the stored result instead of recalculating.
+
+##### Example :
+
+```js
+function memoizedSquare() {
+  let cache = {};
+
+  return function (n) {
+    if (cache[n]) {
+      console.log("From Cache");
+
+      return cache[n];
+    }
+
+    console.log("Calculating...");
+
+    let result = n * n;
+
+    cache[n] = result;
+
+    return result;
+  };
+}
+
+const square = memoizedSquare();
+
+console.log(square(5));
+console.log(square(5));
+```
