@@ -811,3 +811,145 @@ const square = memoizedSquare();
 console.log(square(5));
 console.log(square(5));
 ```
+
+# 4. this Keyword
+
+## 23. What is this keyword?
+
+this is a special keyword that refers to the object that is currently executing the function. Its value depends on how the function is called. In object methods, this refers to the object itself, while in regular functions it refers to the global object or undefined in strict mode. Arrow functions do not have their own this; they inherit it lexically from the surrounding scope.
+
+##### Example:
+
+```js
+console.log(this); // window
+```
+
+global this refers to the window object.
+
+```js
+const user = {
+  name: "Jeet",
+
+  greet() {
+    console.log(this.name);
+  },
+};
+
+user.greet(); // Jeet
+```
+
+Because this refers to user.
+
+```js
+function test() {
+  console.log(this);
+}
+
+test(); // window
+```
+
+```js
+"use strict";
+
+function test() {
+  console.log(this);
+}
+
+test(); // undefine
+```
+
+##### this Inside Arrow Function
+
+Arrow functions do NOT have their own this.
+They inherit this from surrounding lexical scope.
+This is called Lexical this
+
+```js
+const user = {
+  name: "Jeet",
+
+  greet: () => {
+    console.log(this.name);
+  },
+};
+
+user.greet(); // undefined
+```
+
+## 24. Difference between: call, apply bind ?
+
+Normally, this depends on how a function is called.
+
+But sometimes we want to explicitly decide what this should refer to.
+
+That’s where: call, apply, bind are used.
+
+call, apply, and bind are methods used to explicitly control the value of this in JavaScript functions.
+
+#### call() :-
+
+call() executes the function immediately and accepts arguments separately.
+
+###### Syntax:
+
+```js
+functionName.call(thisValue, arg1, arg2);
+```
+
+###### Example:
+
+```js
+const user = {
+  name: "Jeet",
+};
+
+function greet(city) {
+  console.log(`Hello ${this.name} from ${city}`);
+}
+
+greet.call(user, "Kolkata"); // Hello Jeet from Kolkata
+```
+
+#### apply() :-
+
+apply() also executes immediately but accepts arguments as an array.
+
+###### Syntax
+
+```js
+functionName.apply(thisValue, [args]);
+```
+
+###### Example:
+
+```js
+const user = {
+  name: "Jeet",
+};
+
+function greet(city, country) {
+  console.log(`Hello ${this.name} from ${city}, ${country}`);
+}
+
+greet.apply(user, ["Kolkata", "India"]); // Hello Jeet from Kolkata, India
+```
+#### bind() :-
+bind() does not execute immediately; instead, it returns a new function with permanently bound this, which is useful for callbacks and event handlers.
+###### Syntax:
+```js
+const newFunction = functionName.bind(thisValue)
+```
+###### Example:
+```js
+const user = {
+  name: "Jeet",
+};
+
+function greet() {
+  console.log(`Hello ${this.name}`);
+}
+
+const newGreet = greet.bind(user);
+ 
+newGreet(); // Hello Jeet
+```
