@@ -933,13 +933,19 @@ function greet(city, country) {
 
 greet.apply(user, ["Kolkata", "India"]); // Hello Jeet from Kolkata, India
 ```
+
 #### bind() :-
+
 bind() does not execute immediately; instead, it returns a new function with permanently bound this, which is useful for callbacks and event handlers.
+
 ###### Syntax:
+
 ```js
-const newFunction = functionName.bind(thisValue)
+const newFunction = functionName.bind(thisValue);
 ```
+
 ###### Example:
+
 ```js
 const user = {
   name: "Jeet",
@@ -950,6 +956,242 @@ function greet() {
 }
 
 const newGreet = greet.bind(user);
- 
+
 newGreet(); // Hello Jeet
+```
+
+## 25. Difference between shallow copy and deep copy
+
+When copying objects or arrays in JavaScript, there are two types of copying: Shallow Copy, Deep Copy
+
+The main difference is: how nested objects are copied.
+
+A shallow copy copies only the top-level properties of an object, while nested objects are still shared by reference. A deep copy creates completely independent copies of all nested levels. Shallow copies are faster and commonly created using the `spread operator` or `Object.assign`, whereas deep copies can be created using `structuredClone` or other deep cloning techniques.
+
+##### Shallow copy Example :
+
+```js
+const user1 = {
+  name: "Jeet",
+  address: {
+    city: "Kolkata",
+  },
+};
+
+const user2 = { ...user1 };
+
+user2.name = "Paul";
+user2.address.city = "Delhi";
+
+console.log(user1.name); // Jeet
+console.log(user1.address.city); // Delhi
+```
+
+###### Common Ways to Create Shallow Copy
+
+1. Using Spread Operator
+
+```js
+const copy = { ...obj };
+```
+
+2. Using Object.assign()
+
+```js
+const copy = Object.assign({}, obj);
+```
+
+##### Deep copy Example :
+
+```js
+const user1 = {
+  name: "Jeet",
+  address: {
+    city: "Kolkata",
+  },
+};
+
+const user2 = structuredClone(user1);
+
+user2.address.city = "Delhi";
+
+console.log(user1.address.city); // Kolkata
+```
+
+###### Ways to Create Deep Copy
+
+1. structuredClone()
+
+```js
+const copy = structuredClone(obj);
+```
+
+2. JSON.parse(JSON.stringify())
+
+```js
+const copy = JSON.parse(JSON.stringify(obj));
+```
+
+# Objects :
+
+## 26. What is Destructuring?
+
+Destructuring is an ES6 feature that allows us to: extract values from arrays or properties from objects into separate variables in a cleaner and shorter way.
+
+###### Example:
+
+```js
+const arr = [10, 20, 30];
+
+const a = arr[0];
+const b = arr[1];
+
+console.log(a, b); // 10, 20
+```
+
+```js
+const user = {
+  name: "Jeet",
+  age: 22,
+};
+
+const name = user.name; // Jeet
+const age = user.age; // 22
+```
+
+## 27. What is spread operator?
+
+It was introduced in: ES6
+The spread operator is represented by: `...`
+
+It is used to: expand or unpack elements of arrays, objects, or iterable values. In simple words: spread individual values out from an array or object.
+
+It was introduced in: ES6
+
+###### Example :
+
+```js
+const arr1 = [1, 2, 3];
+
+const arr2 = [...arr1];
+
+console.log(arr2); // [1, 2, 3]
+```
+
+```js
+const a = [1, 2];
+
+const b = [3, 4];
+
+const result = [...a, ...b];
+
+console.log(result); // [1, 2, 3, 4]
+```
+
+```js
+const user = {
+  name: "Jeet",
+};
+
+const updatedUser = {
+  ...user,
+  age: 22,
+};
+
+console.log(updatedUser);
+// {
+//   name: "Jeet",
+//   age: 22
+// }
+```
+
+## 28. What is rest operator?
+
+It was introduced in: ES6
+The rest operator is represented by: `...`
+
+It is used to: collect multiple values into a single array or object.
+In simple words: gather remaining values together.
+
+###### Example :
+
+```js
+function sum(...numbers) {
+  console.log(numbers);
+}
+
+sum(1, 2, 3, 4); // [1, 2, 3, 4]
+```
+
+```js
+const user = {
+  name: "Jeet",
+  age: 22,
+  city: "Kolkata",
+};
+
+const { name, ...rest } = user;
+
+console.log(rest);
+// {
+//   age: 22,
+//   city: "Kolkata"
+// }
+```
+## 29. What is optional chaining?
+It is used to: safely access deeply nested object properties without causing errors if a value is null or undefined.
+
+In simple words: if something does not exist, JavaScript stops and returns undefined instead of throwing an error.
+###### Example : 
+```js
+const user = {};
+
+console.log(user.profile?.address?.city); // undefine
+```
+
+## 30. Difference between: Object.freeze(), Object.seal()
+Object.seal() prevents adding or deleting object properties but still allows modification of existing properties. Object.freeze() provides stronger protection by preventing adding, deleting, and modifying properties. Both methods are shallow, meaning nested objects can still be changed unless deep freezing is implemented.
+
+##### Object.seal() Example :
+```js
+const user = {
+  name: "Jeet",
+  age: 22,
+};
+
+Object.seal(user);
+
+user.age = 25;
+
+console.log(user.age); // 25
+```
+###### Cannot Add or Delete Properties -
+```js
+user.city = "Kolkata";
+console.log(user.city); // undefine
+
+delete user.name;
+console.log(user.name); // Jeet
+```
+##### Object.freeze() Example :
+```js
+const user = {
+  name: "Jeet",
+  age: 22,
+};
+
+Object.freeze(user);
+
+user.age = 30;
+
+console.log(user.age); // 22
+```
+Modification fails.
+###### Cannot Add or Delete Properties -
+```js
+user.city = "Delhi";
+console.log(user.city); // undefined
+
+delete user.name;
+console.log(user.name); // Jeet
 ```
