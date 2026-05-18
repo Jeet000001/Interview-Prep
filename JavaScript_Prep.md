@@ -1315,28 +1315,22 @@ submitting a form reloads the page.
 
 ```js
 <form id="form">
-  <button type="submit">
-    Submit
-  </button>
-</form>
+  <button type="submit">Submit</button>
+</form>;
 
-`Without preventDefault()`
-document
-  .getElementById("form")
-  .addEventListener("submit", (e) => {
-    console.log("Form Submitted");
-  });
-Browser reloads page after submit.
+// Without preventDefault()
+document.getElementById("form").addEventListener("submit", (e) => {
+  console.log("Form Submitted");
+});
+// Browser reloads page after submit.
 
-`Using preventDefault()`
-document
-  .getElementById("form")
-  .addEventListener("submit", (e) => {
-    e.preventDefault();
+// Using preventDefault()
+document.getElementById("form").addEventListener("submit", (e) => {
+  e.preventDefault();
 
-    console.log("Form Submitted");
-  });
-Now page reload stops.
+  console.log("Form Submitted");
+});
+// Now page reload stops.
 ```
 
 ###### Common Uses of preventDefault()
