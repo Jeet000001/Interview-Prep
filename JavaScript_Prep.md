@@ -1032,7 +1032,7 @@ const copy = structuredClone(obj);
 const copy = JSON.parse(JSON.stringify(obj));
 ```
 
-# Objects :
+# 5. Objects :
 
 ## 26. What is Destructuring?
 
@@ -1138,11 +1138,15 @@ console.log(rest);
 //   city: "Kolkata"
 // }
 ```
+
 ## 29. What is optional chaining?
+
 It is used to: safely access deeply nested object properties without causing errors if a value is null or undefined.
 
 In simple words: if something does not exist, JavaScript stops and returns undefined instead of throwing an error.
-###### Example : 
+
+###### Example :
+
 ```js
 const user = {};
 
@@ -1150,9 +1154,11 @@ console.log(user.profile?.address?.city); // undefine
 ```
 
 ## 30. Difference between: Object.freeze(), Object.seal()
+
 Object.seal() prevents adding or deleting object properties but still allows modification of existing properties. Object.freeze() provides stronger protection by preventing adding, deleting, and modifying properties. Both methods are shallow, meaning nested objects can still be changed unless deep freezing is implemented.
 
 ##### Object.seal() Example :
+
 ```js
 const user = {
   name: "Jeet",
@@ -1165,7 +1171,9 @@ user.age = 25;
 
 console.log(user.age); // 25
 ```
+
 ###### Cannot Add or Delete Properties -
+
 ```js
 user.city = "Kolkata";
 console.log(user.city); // undefine
@@ -1173,7 +1181,9 @@ console.log(user.city); // undefine
 delete user.name;
 console.log(user.name); // Jeet
 ```
+
 ##### Object.freeze() Example :
+
 ```js
 const user = {
   name: "Jeet",
@@ -1186,12 +1196,185 @@ user.age = 30;
 
 console.log(user.age); // 22
 ```
+
 Modification fails.
+
 ###### Cannot Add or Delete Properties -
+
 ```js
 user.city = "Delhi";
 console.log(user.city); // undefined
 
 delete user.name;
 console.log(user.name); // Jeet
+```
+
+# 6. DOM & Events
+
+## 31. What is event bubbling?
+
+Event bubbling is: a mechanism where an event starts from the target element and then propagates upward through its parent elements.
+
+In simple words: event moves from child → parent → grandparent → document.
+
+###### Example :
+
+```js
+<div id="parent">
+  <button id="child">Click Me</button>
+</div>;
+
+const parent = document.getElementById("parent");
+
+const child = document.getElementById("child");
+
+parent.addEventListener("click", () => {
+  console.log("Parent Clicked");
+});
+
+child.addEventListener("click", () => {
+  console.log("Button Clicked");
+});
+
+// Button Clicked
+// Parent Clicked
+```
+
+For Stop Event Bubbling: we use `event.stopPropagation()`
+
+###### Example :
+
+```js
+child.addEventListener("click", (e) => {
+  e.stopPropagation();
+
+  console.log("Button Clicked"); // Button Clicked
+});
+```
+
+Now clicking child will NOT trigger parent event.
+
+## 32. What is event capturing?
+
+Event capturing is: an event propagation mechanism where the event travels from the top of the DOM tree down to the target element.
+
+In simple words: event moves from parent → child.
+
+It is also called: Trickling Phase
+
+###### Example :
+
+```js
+<div id="parent">
+  <button id="child">Click Me</button>
+</div>;
+
+const parent = document.getElementById("parent");
+
+const child = document.getElementById("child");
+
+parent.addEventListener(
+  "click",
+  () => {
+    console.log("Parent");
+  },
+  true,
+);
+
+child.addEventListener(
+  "click",
+  () => {
+    console.log("Child");
+  },
+  true,
+);
+// Parent
+// Child
+```
+
+## 33. What is event delegation?
+
+Event delegation is: a technique where a single event listener is attached to a parent element to handle events for its child elements.
+
+Instead of adding event listeners to multiple child elements, we add only one listener to the parent.
+
+## 34. Difference between: preventDefault, stopPropagation
+
+#### preventDefault()
+
+preventDefault(): stops the browser’s default behavior for an event.
+
+It does NOT stop event bubbling.
+
+###### Example:
+
+Form Submission
+
+Normally,
+submitting a form reloads the page.
+
+```js
+<form id="form">
+  <button type="submit">
+    Submit
+  </button>
+</form>
+
+`Without preventDefault()`
+document
+  .getElementById("form")
+  .addEventListener("submit", (e) => {
+    console.log("Form Submitted");
+  });
+Browser reloads page after submit.
+
+`Using preventDefault()`
+document
+  .getElementById("form")
+  .addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    console.log("Form Submitted");
+  });
+Now page reload stops.
+```
+
+###### Common Uses of preventDefault()
+
+Used to stop:
+
+- form submission
+- link navigation
+- context menu
+- drag/drop default behavior
+
+#### stopPropagation()
+
+stopPropagation(): stops event propagation through the DOM tree.
+
+It prevents: bubbling, capturing propagation
+
+but does NOT stop browser default behavior.
+
+###### Example:
+
+```js
+<div id="parent">
+  <button id="child">Click</button>
+</div>;
+
+const parent = document.getElementById("parent");
+
+const child = document.getElementById("child");
+
+parent.addEventListener("click", () => {
+  console.log("Parent");
+});
+
+child.addEventListener("click", (e) => {
+  e.stopPropagation();
+
+  console.log("Child");
+});
+// child
 ```
