@@ -1372,3 +1372,211 @@ child.addEventListener("click", (e) => {
 });
 // child
 ```
+
+# 7. Async JavaScript
+
+## 35. Difference between synchronous and asynchronous code
+
+JavaScript code can execute in two ways: Synchronous, Asynchronous
+
+#### Synchronous
+
+Synchronous code executes line by line, where each operation waits for the previous one to complete, making it blocking in nature.
+
+##### Example :
+
+```js
+console.log("Start"); // Start
+console.log("Middle"); // Middle
+console.log("End"); //End
+```
+
+```js
+function heavyTask() {
+  for (let i = 0; i < 1000000000; i++) {}
+}
+
+console.log("Start");
+
+heavyTask();
+
+console.log("End");
+```
+
+End waits until heavyTask() completes.
+
+#### Asynchronous
+
+Asynchronous code allows JavaScript to continue executing other tasks without waiting for long operations like API calls or timers to finish. JavaScript achieves asynchronous behavior using Web APIs, callbacks, promises, async/await, and the event loop.
+
+##### Example :
+
+```js
+console.log("Start");
+
+setTimeout(() => {
+  console.log("Async Task");
+}, 2000);
+
+console.log("End");
+// Start
+// End
+// Async Task
+```
+
+JavaScript is: Single-Threaded
+
+Meaning: only one task executes at a time
+
+But asynchronous behavior is possible because offf:
+
+- Web APIs
+- Event Loop
+- Callback Queue
+
+## 36. What is callback hell?
+
+Callback hell is: a situation where multiple nested callbacks make code difficult to read, maintain, and debug.
+
+It usually happens in asynchronous JavaScript.
+
+#### Example:
+
+```js
+getUser(function (user) {
+  getPosts(user.id, function (posts) {
+    getComments(posts[0].id, function (comments) {
+      getLikes(comments[0].id, function (likes) {
+        console.log(likes);
+      });
+    });
+  });
+});
+```
+
+To Avoid Callback Hell
+
+Modern JavaScript solves this using:
+
+- Promises
+- Async/Await
+
+## 37. What is Promise?
+
+A Promise in JavaScript is an object that stores the result of an asynchronous operation. A Promise can be in three states: pending, fulfilled, or rejected. Promises were introduced to solve callback hell and provide cleaner asynchronous code using .then(), .catch(), and async/await. They are widely used for API calls, timers, and asynchronous workflows.
+
+#### Example:
+
+```js
+const promise = new Promise((resolve, reject) => {
+  let success = true;
+
+  if (success) {
+    resolve("Data Loaded");
+  } else {
+    reject("Something Went Wrong");
+  }
+});
+```
+
+## 38. What is async/await?
+
+async/await is a modern JavaScript feature used to handle asynchronous operations more cleanly and readably. The async keyword makes a function return a Promise, while await pauses execution inside that async function until the Promise resolves or rejects. It is built on top of Promises and simplifies asynchronous code, error handling, and debugging compared to traditional callback or .then() based approaches.
+
+```js
+async function getData() {
+  try {
+    const data = await fetchData();
+
+    console.log(data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+```
+
+## 39. Difference between: Promise.all, Promise.race, Promise.allSettled
+
+#### Promise.all
+
+Promise.all(): waits for ALL promises to resolve successfully.
+
+If even ONE promise rejects: the entire Promise fails immediately.
+
+##### Example :
+
+```js
+const p1 = Promise.resolve("A");
+
+const p2 = Promise.resolve("B");
+
+Promise.all([p1, p2]).then((result) => {
+  console.log(result);
+});
+// ["A", "B"]
+```
+
+#### Promise.race()
+
+Promise.race(): returns the result of the FIRST settled promise. even if the Promise is rejectedit return the rejected ressult.
+
+##### Example :
+
+```js
+const p1 = new Promise((resolve) => setTimeout(() => resolve("A"), 2000));
+
+const p2 = new Promise((resolve) => setTimeout(() => resolve("B"), 1000));
+
+Promise.race([p1, p2]).then((result) => {
+  console.log(result);
+});
+// B
+```
+
+If First Promise Rejects
+
+```js
+const p1 = Promise.reject("Error");
+
+const p2 = Promise.resolve("Success");
+
+Promise.race([p1, p2]).catch((err) => {
+  console.log(err);
+});
+// Error
+```
+
+#### Promise.allSettled()
+
+Promise.allSettled():waits for ALL promises to finish,
+regardless of success or failure.
+
+It NEVER rejects.
+
+##### Example :
+
+```js
+const p1 = Promise.resolve("Success");
+
+const p2 = Promise.reject("Failed");
+
+Promise.allSettled([p1, p2]).then((result) => {
+  console.log(result);
+});
+//   [
+//   {
+//     status: "fulfilled",
+//     value: "Success"
+//   },
+//   {
+//     status: "rejected",
+//     reason: "Failed"
+//   }
+// ]
+```
+
+## 40. What is event loop?
+
+The Event Loop is: a mechanism that allows JavaScript to handle asynchronous operations even though JavaScript is single-threaded.
+
+In simple words: the event loop continuously checks whether the call stack is empty and moves asynchronous callbacks into execution.
